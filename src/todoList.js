@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { changeInputValue,addItem,deleteItem } from './store/actionCreator';
+import axios from 'axios';
+import { changeInputValueAction,addItemAction,deleteItemAction, getListAction } from './store/actionCreator';
 import TodoListUI from './TodoListUI';
 import store from './store/index'
 class TodoList extends Component {
@@ -9,19 +10,28 @@ class TodoList extends Component {
 
     store.subscribe(this.storeChange)
   };
+  componentDidMount() {
+    axios.get('https://5eb669c7875f1a00167e0c82.mockapi.io/api/mock/todoListData').then((res)=> {
+      console.log(res);
+      const data = res.data;
+      const action = getListAction(data);
+      store.dispatch(action)
+    })
+  }
   storeChange = () => {
     this.setState(store.getState());
   };
   changeInputValue = (e) => {
-    const action = changeInputValue(e.target.value)
+    const action = changeInputValueAction(e.target.value)
     store.dispatch(action);
   };
   clickBtn = () => {
-    const action = addItem();
+    const action = addItemAction();
     store.dispatch(action);
   };
-  deleteItem = (item, index) => {
-    const action = deleteItem(index);
+  deleteItem = (index) => {
+    console.log(index)
+    const action = deleteItemAction(index);
     store.dispatch(action);
   };
   render() { 
