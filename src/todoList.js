@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Input,Button,List } from 'antd'
 import { changeInputValue,addItem,deleteItem } from './store/actionCreator';
+import TodoListUI from './TodoListUI';
 import store from './store/index'
 class TodoList extends Component {
   constructor(props) {
@@ -27,25 +27,13 @@ class TodoList extends Component {
   render() { 
     const {list,inputValue} = this.state;
     return ( 
-      <div style={{padding:'20px 20px'}}>
-        <div>
-          <Input placeholder='writeSomething' 
-            style={{ width:'250px'}}
-            onChange={this.changeInputValue}
-            value={inputValue}
-          />
-          <Button type='primary' style={{marginLeft:'10px'}} onClick={this.clickBtn}>add</Button>
-        </div>
-        <div style={{margin:'10px',width:'300px'}}>
-          <List 
-            bordered
-            dataSource={list}
-            renderItem={(item,index) => (
-              <List.Item onClick={()=> this.deleteItem(item,index)}>{item}</List.Item>
-            )}
-          />
-        </div>
-      </div>
+      <TodoListUI
+        inputValue={inputValue}
+        changeInputValue={this.changeInputValue}
+        clickBtn={this.clickBtn}
+        list={list}
+        deleteItem={this.deleteItem}
+      />
      );
   }
 }
